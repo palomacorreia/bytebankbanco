@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'contacts_form.dart';
+
 class Contacts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,17 @@ class Contacts extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+              builder: (context) => ContactForm(),
+            ),
+          )
+              .then(
+                (newContact) => debugPrint(newContact.toString()),
+          );
+        },
         child: Icon(
           Icons.add,
         ),

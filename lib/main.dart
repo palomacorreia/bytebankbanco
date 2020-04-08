@@ -1,8 +1,11 @@
-import 'package:bytebankbanco/screens/contacts_form.dart';
 import 'package:bytebankbanco/screens/dashboard.dart';
 import 'package:flutter/material.dart';
-
-void main() => runApp(BytebankApp());
+import 'models/contact.dart';
+import 'package:bytebankbanco/database/app_database.dart';
+void main() {
+  runApp(BytebankApp());
+  findAll().then((contacts) => debugPrint(contacts.toString()));
+}
 
 class BytebankApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -17,7 +20,7 @@ class BytebankApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-      home: ContactForm(),
+      home: Dashboard(),
     );
   }
 }
