@@ -11,7 +11,7 @@ final ContactDao _dao = ContactDao();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contacts'),
+        title: Text('Transfer'),
       ),
       body: FutureBuilder(
         future: Future.delayed(Duration(seconds: 1)).then((value) => _dao.findAll()),
