@@ -1,5 +1,7 @@
+import 'package:bytebankbanco/components/progress.dart';
 import 'package:bytebankbanco/database/dao/contacts_dao.dart';
 import 'package:bytebankbanco/models/contact.dart';
+import 'package:bytebankbanco/screens/transaction_form.dart';
 import 'package:flutter/material.dart';
 
 import 'contacts_form.dart';
@@ -21,16 +23,7 @@ final ContactDao _dao = ContactDao();
               break;
             //carregando
             case ConnectionState.waiting:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    CircularProgressIndicator(),
-                    Text('Loading')
-                  ],
-                ),
-              );
+             return Progress();
               break;
             case ConnectionState.active:
               break;
@@ -39,7 +32,16 @@ final ContactDao _dao = ContactDao();
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final Contact contact = contacts[index];
-                  return _ContactItem(contact);
+                  return _ContactItem(
+                    contact,
+                    onClick: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => TransactionForm(contact),
+                        ),
+                      );
+                    },
+                  );
                 },
                 itemCount: contacts.length,
               );
@@ -68,13 +70,17 @@ final ContactDao _dao = ContactDao();
 
 class _ContactItem extends StatelessWidget {
   final Contact contact;
-
-  _ContactItem(this.contact);
+  final Function onClick;
+  _ContactItem(
+      this.contact, {
+        @required this.onClick,
+      });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: () => onClick(),
         title: Text(
           contact.name,
           style: TextStyle(

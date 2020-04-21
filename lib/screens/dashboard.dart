@@ -1,3 +1,4 @@
+import 'package:bytebankbanco/screens/transactions_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ class Dashboard extends StatelessWidget {
                     _show_Contacts(context);
                   },
                 ),
-                _featureItem('Transaction Feed', Icons.description, onClick:()=> print('transaction feed')),
+                _featureItem('Transaction Feed', Icons.description, onClick:()=> _showTransactions(context)),
 
               ],
             ),
@@ -45,6 +46,14 @@ class Dashboard extends StatelessWidget {
       ),
     );
   }
+}
+
+_showTransactions(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => TransactionsList(),
+    ),
+  );
 }
 
 class _featureItem extends StatelessWidget {
