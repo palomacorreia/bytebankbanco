@@ -27,7 +27,7 @@ class Dashboard extends StatelessWidget {
                   'Tranfer',
                   Icons.monetization_on,
                   onClick: () {
-                    _show_Contacts(context);
+                    _show_contacts(context);
                   },
                 ),
                 _featureItem('Transaction Feed', Icons.description, onClick:()=> _showTransactions(context)),
@@ -39,7 +39,7 @@ class Dashboard extends StatelessWidget {
       ),
     );
   }
-  void _show_Contacts(BuildContext context) {
+  void _show_contacts(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Contacts(),

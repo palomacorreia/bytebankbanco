@@ -1,9 +1,5 @@
 import 'package:bytebankbanco/screens/dashboard.dart';
-import 'package:bytebankbanco/services/webClient.dart';
 import 'package:flutter/material.dart';
-
-import 'models/contact.dart';
-import 'models/transaction.dart';
 
 void main() {
   runApp(BytebankApp());

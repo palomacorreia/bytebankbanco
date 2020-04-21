@@ -1,5 +1,6 @@
 import 'package:bytebankbanco/models/contact.dart';
 import 'package:bytebankbanco/models/transaction.dart';
+import 'package:bytebankbanco/services/webClients/transaction_webclient.dart';
 import 'package:flutter/material.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -13,6 +14,7 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
+  final TransactionWebClient _webClient = TransactionWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +58,18 @@ class _TransactionFormState extends State<TransactionForm> {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: RaisedButton(
-                    child: Text('Transfer'), onPressed: () {
-                      final double value = double.tryParse(_valueController.text);
-                      final transactionCreated = Transaction(value, widget.contact);
-                  },
+                    child: Text('Transfer'),
+                    onPressed: () {
+                      final double value =
+                          double.tryParse(_valueController.text);
+                      final transactionCreated =
+                          Transaction(value, widget.contact);
+                      _webClient.save(transactionCreated).then((transaction) {
+                        if (transaction != null) {
+                          Navigator.pop(context);
+                        }
+                      });
+                    },
                   ),
                 ),
               )
