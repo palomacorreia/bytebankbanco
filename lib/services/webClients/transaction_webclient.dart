@@ -24,13 +24,18 @@ class TransactionWebClient {
           'password': password,
         },
         body: transactionJson);
-    if (response.statusCode == 400) {
-      throw Exception("Erro ao realizar Transferência!");
+    if (response.statusCode == 200) {
+      return Transaction.fromJson(jsonDecode(response.body));
     }
-    if (response.statusCode == 401) {
-      throw Exception("Falha na Autenticação!");
-    }
-
-    return Transaction.fromJson(jsonDecode(response.body));
+    _throwHttpError(response.statusCode);
   }
+  void _throwHttpError(int statusCode) =>
+      throw Exception(_statusCodeResponses[statusCode]);
+
+  static final Map<int, String> _statusCodeResponses = {
+    400: 'Erro ao realizar transação',
+    401: 'falha na Autenticação'
+  };
+  };
 }
+
