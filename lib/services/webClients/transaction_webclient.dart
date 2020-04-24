@@ -36,6 +36,5 @@ class TransactionWebClient {
     400: 'Erro ao realizar transação',
     401: 'falha na Autenticação'
   };
-  };
 }
 
