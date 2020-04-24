@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:bytebankbanco/components/response_dialog.dart';
 import 'package:bytebankbanco/components/transaction_auth_dialog.dart';
 import 'package:bytebankbanco/models/contact.dart';
@@ -71,7 +72,6 @@ class _TransactionFormState extends State<TransactionForm> {
                           builder: (contextDialog) {
                             return TransactionAuthDialog(
                               onConfirm: (String password) {
-                                print(password);
                                 _save(transactionCreated, password, context);
                               },
                             );
@@ -92,20 +92,51 @@ class _TransactionFormState extends State<TransactionForm> {
     String password,
     BuildContext context,
   ) async {
-    final Transaction transaction =
-        await _webClient.save(transactionCreated, password,).catchError((e) {
-      showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog(e.message);
-          });
-    }, test: (e) => e is Exception);
+    Transaction transaction = await _send(
+      transactionCreated,
+      password,
+      context,
+    );
+    _showSuccessfulMessage(transaction, context);
+  }
+
+  Future _showSuccessfulMessage(
+      Transaction transaction, BuildContext context) async {
     if (transaction != null) {
+      await showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return SuccessDialog('Transação realizada com sucesso!');
+          });
+      Navigator.pop(context);
+    }
+  }
+
+  Future<Transaction> _send(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    final Transaction transaction =
+        await _webClient.save(transactionCreated, password).catchError((e) {
+      _showFailureMessage(context, message: e.message);
+    }, test: (e) => e is HttpException).catchError((e) {
+      _showFailureMessage(context, message: 'Tempo de transação esgotado!');
+    }, test: (e) => e is TimeoutException).catchError((e) {
       showDialog(
           context: context,
           builder: (contextDialog) {
-            return SuccessDialog('Transação realizado com sucesso!');
-          }).then((value) => Navigator.pop(context));
-    }
+            return FailureDialog("Erro desconhecido");
+          });
+    });
+    return transaction;
+  }
+
+  void _showFailureMessage(
+    BuildContext context, {
+    String message = 'Unknown error',
+  }) {
+    showDialog(
+        context: context,
+        builder: (contextDialog) {
+          return FailureDialog(message);
+        });
   }
 }

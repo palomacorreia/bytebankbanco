@@ -30,11 +30,16 @@ class TransactionWebClient {
     _throwHttpError(response.statusCode);
   }
   void _throwHttpError(int statusCode) =>
-      throw Exception(_statusCodeResponses[statusCode]);
+      throw  HttpException(_statusCodeResponses[statusCode]);
 
   static final Map<int, String> _statusCodeResponses = {
     400: 'Erro ao realizar transação',
-    401: 'falha na Autenticação'
+    401: 'Falha na Autenticação'
   };
 }
 
+class HttpException implements Exception {
+  final String message;
+
+  HttpException(this.message);
+}
