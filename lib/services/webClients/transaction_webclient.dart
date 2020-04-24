@@ -30,7 +30,6 @@ class TransactionWebClient {
     if (response.statusCode == 401) {
       throw Exception("Falha na Autenticação!");
     }
-    throw Exception("Error");
 
     return Transaction.fromJson(jsonDecode(response.body));
   }
