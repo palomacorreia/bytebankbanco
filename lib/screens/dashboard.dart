@@ -24,7 +24,7 @@ class Dashboard extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 _featureItem(
-                  'Tranfer',
+                  'Transfer',
                   Icons.monetization_on,
                   onClick: () {
                     _show_contacts(context);

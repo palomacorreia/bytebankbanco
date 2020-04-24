@@ -1,3 +1,4 @@
+import 'package:bytebankbanco/components/transaction_auth_dialog.dart';
 import 'package:bytebankbanco/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
