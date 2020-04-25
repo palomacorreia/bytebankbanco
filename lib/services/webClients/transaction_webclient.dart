@@ -17,7 +17,7 @@ class TransactionWebClient {
 
   Future<Transaction> save(Transaction transaction, String password) async {
     final String transactionJson = jsonEncode(transaction.toJson());
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(Duration(seconds: 3));
     final Response response = await client.post(baseUrl,
         headers: {
           'Content-type': 'application/json',
@@ -35,14 +35,6 @@ class TransactionWebClient {
     }
     return 'unknown error';
   }
-
-  void _throwHttpError(int statusCode) =>
-      throw HttpException(_statusCodeResponses[statusCode]);
-
-
-
-
-
 
   static final Map<int, String> _statusCodeResponses = {
     400: 'Erro ao realizar transação',

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bytebankbanco/components/progress.dart';
 import 'package:bytebankbanco/components/response_dialog.dart';
 import 'package:bytebankbanco/components/transaction_auth_dialog.dart';
 import 'package:bytebankbanco/models/contact.dart';
@@ -20,6 +21,9 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebClient _webClient = TransactionWebClient();
   final String transactionId = Uuid().v4();
+
+  bool _sending=false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +36,15 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Visibility(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Progress(
+                    message: "Transferindo...",
+                  ),
+                ),
+                visible: _sending,
+              ),
               Text(
                 widget.contact.name,
                 style: TextStyle(
@@ -67,7 +80,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       final double value =
                           double.tryParse(_valueController.text);
                       final transactionCreated =
-                          Transaction(transactionId,value, widget.contact);
+                          Transaction(transactionId, value, widget.contact);
                       showDialog(
                           context: context,
                           builder: (contextDialog) {
@@ -93,11 +106,17 @@ class _TransactionFormState extends State<TransactionForm> {
     String password,
     BuildContext context,
   ) async {
+    setState(() {
+      _sending=true;
+    });
     Transaction transaction = await _send(
       transactionCreated,
       password,
       context,
     );
+    setState(() {
+      _sending=false;
+    });
     _showSuccessfulMessage(transaction, context);
   }
 
@@ -126,7 +145,12 @@ class _TransactionFormState extends State<TransactionForm> {
           builder: (contextDialog) {
             return FailureDialog("Erro desconhecido");
           });
-    });
+    }).whenComplete((){
+          setState(() {
+            _sending=false;
+          });
+        });
+
     return transaction;
   }
 
