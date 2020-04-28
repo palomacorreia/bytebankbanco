@@ -23,14 +23,14 @@ class Dashboard extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: <Widget>[
-                _featureItem(
+                featureItem(
                   'Transfer',
                   Icons.monetization_on,
                   onClick: () {
                     _show_contacts(context);
                   },
                 ),
-                _featureItem('Transaction Feed', Icons.description, onClick:()=> _showTransactions(context)),
+                featureItem('Transaction Feed', Icons.description, onClick:()=> _showTransactions(context)),
 
               ],
             ),
@@ -56,12 +56,12 @@ _showTransactions(BuildContext context) {
   );
 }
 
-class _featureItem extends StatelessWidget {
+class featureItem extends StatelessWidget {
   final String name;
   final IconData icon;
   final Function onClick;
 
-  _featureItem(this.name, this.icon, {@required this.onClick});
+  featureItem(this.name, this.icon, {@required this.onClick});
 
   @override
   Widget build(BuildContext context) {
