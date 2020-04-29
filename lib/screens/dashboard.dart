@@ -11,7 +11,13 @@ class Dashboard extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dashboard'),
       ),
-      body: Column(
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+        child: ConstrainedBox(
+        constraints: BoxConstraints(
+        minHeight: constraints.maxHeight,
+      ),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -19,10 +25,12 @@ class Dashboard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Image.asset('images/bytebank_logo.png'),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
+          Container(
+            height: 120,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
               children: <Widget>[
+
                 featureItem(
                   'Transfer',
                   Icons.monetization_on,
@@ -30,15 +38,27 @@ class Dashboard extends StatelessWidget {
                     _show_contacts(context);
                   },
                 ),
-                featureItem('Transaction Feed', Icons.description, onClick:()=> _showTransactions(context)),
-
+                featureItem(
+                  'Transfer',
+                  Icons.monetization_on,
+                  onClick: () => _show_contacts(context),
+                ),
+                featureItem(
+                  'Transaction Feed',
+                  Icons.description,
+                  onClick: () => _showTransactions(context),
+                ),
               ],
             ),
           ),
         ],
       ),
+        ),
+        ),
+      ),
     );
   }
+
   void _show_contacts(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
